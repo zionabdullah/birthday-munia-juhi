@@ -391,11 +391,10 @@ h1, h2, h3 {
 /* --- INTERACTIVE CAKE --- */
 .cake-container {
   max-width: 500px;
+  height: 340px; /* Fixed height for consistent layout */
   margin: 0 auto 4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3rem 2rem;
+  position: relative;
+  overflow: visible !important; /* Prevent candle/flame clipping */
   box-shadow: 0 0 40px var(--card-glow);
 }
 
@@ -405,15 +404,20 @@ h1, h2, h3 {
   background: linear-gradient(90deg, #5c537a, #8c82b0, #5c537a);
   border-radius: 100px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-  margin-top: 130px; /* Leave space for cake & candles */
-  position: relative;
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 4;
 }
 
 .cake {
   position: absolute;
   width: 220px;
-  bottom: 142px; /* Set directly above platform */
+  height: 115px;
+  bottom: 82px; /* Platform bottom (70px) + Platform height (12px) */
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 3;
 }
 
@@ -542,12 +546,16 @@ h1, h2, h3 {
 }
 
 .cake-instructions {
-  margin-top: 1.5rem;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
   text-align: center;
   font-size: 0.95rem;
   color: var(--color-secondary);
   font-weight: 600;
   text-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+  z-index: 5;
 }
 
 .cake-instructions p {

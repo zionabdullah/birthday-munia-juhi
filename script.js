@@ -354,6 +354,15 @@ function activateCelebrationMode() {
   document.getElementById('celebration-section').classList.remove('hidden');
   
   isCelebrationRunning = true;
+
+  // Auto-start music if audio context is already initialized by user interaction
+  if (synth.audioCtx && !synth.isPlaying) {
+    synth.audioCtx.resume().then(() => {
+      if (!synth.isPlaying) {
+        toggleMusic();
+      }
+    }).catch(err => console.log("Autoplay blocked until interaction."));
+  }
   
   // Trigger initial bursts
   for (let i = 0; i < 5; i++) {
@@ -403,14 +412,33 @@ volumeSlider.addEventListener('input', (e) => {
 });
 
 // Trigger music playback implicitly on first genuine user interaction with the page
-// to bypass browser autoplay blocks
-function autoStartMusic() {
+// to bypass browser autoplay blocks. Using capture phase (true) so it triggers even
+// if child elements stop event propagation.
+function startAudioOnInteraction(e) {
+  // If they click on the music controls directly, let the controls handle it
+  if (e && e.target && e.target.closest('#music-player')) {
+    return;
+  }
+  
   synth.init();
-  document.removeEventListener('click', autoStartMusic);
-  document.removeEventListener('keydown', autoStartMusic);
+  
+  // Only auto-play if we are already in celebration mode
+  if (isCelebrationRunning && !synth.isPlaying) {
+    toggleMusic();
+  }
+  
+  removeInteractionListeners();
 }
-document.addEventListener('click', autoStartMusic);
-document.addEventListener('keydown', autoStartMusic);
+
+function removeInteractionListeners() {
+  document.removeEventListener('click', startAudioOnInteraction, true);
+  document.removeEventListener('keydown', startAudioOnInteraction, true);
+  document.removeEventListener('touchstart', startAudioOnInteraction, true);
+}
+
+document.addEventListener('click', startAudioOnInteraction, true);
+document.addEventListener('keydown', startAudioOnInteraction, true);
+document.addEventListener('touchstart', startAudioOnInteraction, true);
 
 
 // --- CAKE & CANDLE BLOWING INTERACTIONS ---
