@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy 27th Birthday, Munia Juhi! ✨</title>
+  <meta name="description" content="A special interactive birthday celebration website for Munia Juhi turning 27. Make a wish and blow the candles!">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background elements -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <canvas id="celebration-canvas"></canvas>
+
+  <!-- Floating Music Player -->
+  <div class="music-player" id="music-player">
+    <button class="music-btn" id="music-toggle-btn" aria-label="Toggle music">
+      <svg class="icon-play" viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z" fill="currentColor"/>
+      </svg>
+      <svg class="icon-pause hidden" viewBox="0 0 24 24">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/>
+      </svg>
+    </button>
+    <div class="music-info">
+      <span class="music-title">Birthday Music Box 🎵</span>
+      <div class="music-controls-wrapper">
+        <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" aria-label="Volume">
+        <span class="music-status">Off</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="content-container">
+    <!-- Section 1: Pre-Birthday Countdown (Active if before June 20th) -->
+    <section id="countdown-section" class="card glass-card">
+      <div class="card-header">
+        <span class="badge">The Magic Begins Soon</span>
+        <h1>Waiting for June 20th...</h1>
+        <p class="subtitle">A special celebration is preparing for Munia Juhi's 27th Birthday.</p>
+      </div>
+      
+      <div class="timer-grid">
+        <div class="timer-box">
+          <span id="days">00</span>
+          <span class="timer-label">Days</span>
+        </div>
+        <div class="timer-box">
+          <span id="hours">00</span>
+          <span class="timer-label">Hours</span>
+        </div>
+        <div class="timer-box">
+          <span id="minutes">00</span>
+          <span class="timer-label">Minutes</span>
+        </div>
+        <div class="timer-box">
+          <span id="seconds">00</span>
+          <span class="timer-label">Seconds</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <p>Keep this page open. The celebration starts automatically at midnight! 🎉</p>
+      </div>
+    </section>
+
+    <!-- Section 2: Main Celebration (Active once June 20th arrives or countdown finishes) -->
+    <section id="celebration-section" class="hidden">
+      <div class="hero-text text-center">
+        <h2 class="pre-title">Happy 27th Birthday</h2>
+        <h1 class="main-title gradient-text">Munia Juhi</h1>
+        <p class="birthday-date">June 20, 2026</p>
+        <p class="intro-p">Welcome to your virtual birthday party! We built this digital space to celebrate your 27th year of brightness, kindness, and beauty. Tap/click on the candles below to make your wish and blow them out!</p>
+      </div>
+
+      <!-- Interactive Cake Container -->
+      <div class="cake-container glass-card">
+        <div class="cake-platform"></div>
+        <div class="cake">
+          <!-- Multi layers -->
+          <div class="layer layer-bottom"></div>
+          <div class="layer layer-middle"></div>
+          <div class="layer layer-top"></div>
+          <!-- Frosting/drips -->
+          <div class="drip drip-1"></div>
+          <div class="drip drip-2"></div>
+          <div class="drip drip-3"></div>
+          <!-- 3 Candles for 27 (2, 7, and a centerpiece or just interactive candles) -->
+          <div class="candles-wrapper">
+            <div class="candle active" data-candle="1" id="candle-1">
+              <div class="wick"></div>
+              <div class="flame"></div>
+            </div>
+            <div class="candle active" data-candle="2" id="candle-2">
+              <div class="wick"></div>
+              <div class="flame"></div>
+            </div>
+            <div class="candle active" data-candle="3" id="candle-3">
+              <div class="wick"></div>
+              <div class="flame"></div>
+            </div>
+          </div>
+        </div>
+        <div class="cake-instructions">
+          <p id="cake-instruction-text">✨ Tap each candle flame to blow it out! ✨</p>
+          <button id="reset-candles-btn" class="btn btn-secondary hidden">Relight Candles</button>
+        </div>
+      </div>
+
+      <!-- Interactive Gift Box Grid (27 Wishes) -->
+      <div class="wishes-heading text-center">
+        <h2 class="section-title">27 Special Wishes for Year 27</h2>
+        <p class="subtitle">Click on each box to unwrap a special wish card compiled for you.</p>
+      </div>
+
+      <div class="gifts-grid" id="gifts-grid">
+        <!-- Javascript will inject 27 boxes here dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Big Interactive Modal for Wish reveal or Candle blow completion -->
+  <div class="modal-overlay hidden" id="wish-modal">
+    <div class="modal-card glass-card">
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="Close modal">&times;</button>
+      <div class="modal-body text-center">
+        <div class="gift-icon-container">
+          <svg class="modal-gift-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25A1.5 1.5 0 0 1 3 19.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0-2.625V7.5m0 0h5.25c.621 0 1.125.504 1.125 1.125v3M12 7.5H6.75a1.125 1.125 0 0 0-1.125 1.125v3M3.375 11.25h17.25M12 11.25v9.75" />
+          </svg>
+        </div>
+        <h3 id="modal-title" class="gradient-text">Wish Box Opened!</h3>
+        <div class="modal-wish-content" id="modal-wish-content">
+          <!-- Dynamically inserted -->
+        </div>
+        <button class="btn btn-primary" id="modal-ok-btn">Keep Exploring</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer text-center">
+    <p>Made with ❤️ &bull; Happy 27th Birthday Munia Juhi!</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
